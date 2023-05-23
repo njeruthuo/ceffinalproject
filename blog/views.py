@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
 
-from .models import Blog
+from .models import Blog, Gallery, Event
 from .forms import BlogForm
 
 
@@ -10,17 +10,47 @@ def index(request):
 
 
 def gallery_view(request):
-    return render(request, 'blog/gallery.html')
+    photos = Gallery.objects.all()
+    return render(request, 'blog/gallery.html', {
+        'photos': photos,
+    })
+
+
+def photo_view(request, pk):
+    photo = get_object_or_404(Gallery, pk=pk)
+    return render(request, 'photo.html', {
+        'photo': photo
+    })
+
+
+def events(request):
+    events = Event.objects.all()
+    return render(request, 'blog/event.html', {
+        'events': events,
+    })
+
+
+def event_view(request, pk):
+    event = get_object_or_404(Event, pk=pk)
+    return render(request, 'event.html', {
+        'event': event
+    })
 
 
 def blog_list(request):
     blogs = Blog.objects.all()
-    context = {'blogs': blogs}
+    popular_blogs = Blog.objects.order_by(
+        '-views')[:5]  # Fetch top 10 popular blogs
+
+    context = {
+        'blogs': blogs,
+        'popular_blogs': popular_blogs,
+    }
     return render(request, 'blog/blog-list.html', context)
 
 
 def my_blogs(request):
-    # blogs written by the author himself will be displayed here
+    # blogs written by self himself will be displayed here
     user = request.user
     my_blogs = Blog.objects.filter(author=user)
     return render(request, 'blog/blog_list2.html', {
@@ -30,8 +60,15 @@ def my_blogs(request):
 
 def blog_detail(request, pk):
     blog = get_object_or_404(Blog, pk=pk)
-    context = {'blog': blog}
-    return render(request, 'blog/coming-soon.html', context)
+    blog = get_object_or_404(Blog, id=pk)
+
+    blog.views += 1
+    blog.save()
+
+    context = {
+        'blog': blog,
+    }
+    return render(request, 'blog/blog-detail.html', context)
 
 
 def create_blog(request):

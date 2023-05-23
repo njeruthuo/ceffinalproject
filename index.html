@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <link
+            rel="stylesheet"
+            href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"
+        />
+        <style>
+            body {
+                margin: 0;
+            }
+            /* CSS for the header */
+            header {
+                background-color: #333;
+                padding: 20px;
+                color: #fff;
+                text-align: center;
+                position: relative;
+            }
+
+            h1 {
+                margin: 0;
+                font-size: 24px;
+            }
+
+            p {
+                margin: 10px 0 0;
+                font-size: 16px;
+            }
+
+            /* CSS for the hamburger menu */
+            .menu-icon {
+                position: absolute;
+                top: 20px;
+                left: 20px;
+                color: #fff;
+                cursor: pointer;
+                font-size: 24px; /* Adjust the size of the hamburger menu */
+            }
+
+            .menu {
+                display: none;
+                position: absolute;
+                top: 94px;
+                left: 0;
+                background-color: #fff;
+                padding: 10px;
+                border: 2px solid rgb(96, 96, 96);
+                width: 200px;
+                text-align: left;
+                z-index: 1;
+            }
+
+            .menu a {
+                display: block;
+                color: #333;
+                text-decoration: none;
+                padding: 5px;
+            }
+            footer {
+                background-color: #333;
+                padding: 20px;
+                color: #fff;
+                text-align: center;
+            }
+
+            .social-icons {
+                margin: 10px 0;
+            }
+
+            .social-icons a {
+                display: inline-block;
+                color: #fff;
+                text-decoration: none;
+                margin: 0 10px;
+                font-size: 24px;
+            }
+        </style>
+        <script>
+            // JavaScript to toggle the menu and change the menu icon
+            function toggleMenu() {
+                var menu = document.getElementById("menu-dropdown");
+                var icon = document.getElementById("menu-icon");
+
+                if (menu.style.display === "block") {
+                    menu.style.display = "none";
+                    icon.innerHTML = "&#9776;"; // Change back to hamburger menu
+                } else {
+                    menu.style.display = "block";
+                    icon.innerHTML = "&times;"; // Change to X icon
+                }
+            }
+        </script>
+    </head>
+    <body>
+        <header>
+            <h1>My Website</h1>
+            <p>Welcome to my website</p>
+            <div class="menu-icon" id="menu-icon" onclick="toggleMenu()">
+                &#9776;
+            </div>
+            <div class="menu" id="menu-dropdown">
+                <a href="#">
+                    <i
+                        ><svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            width="16"
+                            height="16"
+                            fill="currentColor"
+                            class="bi bi-house"
+                            viewBox="0 0 16 16"
+                        >
+                            <path
+                                d="M8.707 1.5a1 1 0 0 0-1.414 0L.646 8.146a.5.5 0 0 0 .708.708L2 8.207V13.5A1.5 1.5 0 0 0 3.5 15h9a1.5 1.5 0 0 0 1.5-1.5V8.207l.646.647a.5.5 0 0 0 .708-.708L13 5.793V2.5a.5.5 0 0 0-.5-.5h-1a.5.5 0 0 0-.5.5v1.293L8.707 1.5ZM13 7.207V13.5a.5.5 0 0 1-.5.5h-9a.5.5 0 0 1-.5-.5V7.207l5-5 5 5Z"
+                            /></svg
+                    ></i>
+                    Home</a
+                >
+                <a href="#"> <i></i> About</a>
+                <a href="#">Services</a>
+                <a href="#">
+                    <i
+                        ><svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            width="16"
+                            height="16"
+                            fill="currentColor"
+                            class="bi bi-telephone-fill"
+                            viewBox="0 0 16 16"
+                        >
+                            <path
+                                fill-rule="evenodd"
+                                d="M1.885.511a1.745 1.745 0 0 1 2.61.163L6.29 2.98c.329.423.445.974.315 1.494l-.547 2.19a.678.678 0 0 0 .178.643l2.457 2.457a.678.678 0 0 0 .644.178l2.189-.547a1.745 1.745 0 0 1 1.494.315l2.306 1.794c.829.645.905 1.87.163 2.611l-1.034 1.034c-.74.74-1.846 1.065-2.877.702a18.634 18.634 0 0 1-7.01-4.42 18.634 18.634 0 0 1-4.42-7.009c-.362-1.03-.037-2.137.703-2.877L1.885.511z"
+                            /></svg
+                    ></i>
+                    Contact</a
+                >
+            </div>
+        </header>
+
+        <div style="height:100vh;" class=""> <p>Hello</p></div>
+
+        <!-- Rest of your HTML content -->
+        <footer>
+            <div class="social-icons">
+                <a href="#" class="fa fa-facebook"></a>
+                <a href="#" class="fa fa-twitter"></a>
+                <a href="#" class="fa fa-instagram"></a>
+                <a href="#" class="fa fa-linkedin"></a>
+                <a href="#" class="fa fa-youtube"></a>
+                <a href="#" class="fa fa-pinterest"></a>
+                <a href="#" class="fa fa-github"></a>
+                <a href="#" class="fa fa-google"></a>
+                <a href="#" class="fa fa-dribbble"></a>
+                <a href="#" class="fa fa-behance"></a>
+            </div>
+            <p>&copy; 2023 Your Website. All rights reserved.</p>
+        </footer>
+    </body>
+</html>
