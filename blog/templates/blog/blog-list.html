@@ -107,7 +107,7 @@
                             {% for blog in popular_blogs %}
                             <li class="w3-padding-16">
                                 <img
-                                    src="{% static 'blog/images/index/workshop.jpg' %}"
+                                    src="{{blog.image.url}}"
                                     alt="Image"
                                     class="w3-left w3-margin-right"
                                     style="width: 50px"

@@ -1,6 +1,8 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
 
+from django.contrib.auth.decorators import login_required
+
 from .models import Blog, Gallery, Event
 from .forms import BlogForm
 
@@ -9,6 +11,7 @@ def index(request):
     return render(request, 'blog/index.html')
 
 
+@login_required
 def gallery_view(request):
     photos = Gallery.objects.all()
     return render(request, 'blog/gallery.html', {
@@ -16,6 +19,7 @@ def gallery_view(request):
     })
 
 
+@login_required
 def photo_view(request, pk):
     photo = get_object_or_404(Gallery, pk=pk)
     return render(request, 'photo.html', {
@@ -23,6 +27,7 @@ def photo_view(request, pk):
     })
 
 
+@login_required
 def events(request):
     events = Event.objects.all()
     return render(request, 'blog/event.html', {
@@ -30,6 +35,7 @@ def events(request):
     })
 
 
+@login_required
 def event_view(request, pk):
     event = get_object_or_404(Event, pk=pk)
     return render(request, 'event.html', {
@@ -37,6 +43,7 @@ def event_view(request, pk):
     })
 
 
+@login_required
 def blog_list(request):
     blogs = Blog.objects.all()
     popular_blogs = Blog.objects.order_by(
@@ -49,6 +56,7 @@ def blog_list(request):
     return render(request, 'blog/blog-list.html', context)
 
 
+@login_required
 def my_blogs(request):
     # blogs written by self himself will be displayed here
     user = request.user
@@ -58,6 +66,7 @@ def my_blogs(request):
     })
 
 
+@login_required
 def blog_detail(request, pk):
     blog = get_object_or_404(Blog, pk=pk)
     blog = get_object_or_404(Blog, id=pk)
@@ -71,6 +80,7 @@ def blog_detail(request, pk):
     return render(request, 'blog/blog-detail.html', context)
 
 
+@login_required
 def create_blog(request):
     form = BlogForm()
     if request.method == 'POST':
@@ -86,6 +96,7 @@ def create_blog(request):
     return render(request, 'blog/blog_create.html', {'form': form})
 
 
+@login_required
 def update_blog(request, pk):
     blog = get_object_or_404(Blog, pk=pk)
     form = BlogForm(instance=blog)
@@ -100,6 +111,7 @@ def update_blog(request, pk):
     return render(request, 'blog/blog_update.html', {'form': form})
 
 
+@login_required
 def delete_blog(request, pk):
     blog = get_object_or_404(Blog, pk=pk)
     if request.method == 'POST':
