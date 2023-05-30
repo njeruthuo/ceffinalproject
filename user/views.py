@@ -2,18 +2,19 @@ from django.shortcuts import render, redirect
 from django.contrib import messages
 from .forms import UserRegisterForm
 
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth import authenticate, login, logout
 
 from django.contrib import messages
 
 
 def register(request):
+    if request.user.is_authenticated:
+        return redirect('home')
     if request.method == 'POST':
         form = UserRegisterForm(request.POST)
         if form.is_valid():
             form.save()
-            username = form.cleaned_data.get('username')
-            messages.success(
-                request, f'Account created for {username}. You can now log in.')
             return redirect('login')
         else:
             # Clear messages before rendering the form
@@ -25,8 +26,36 @@ def register(request):
     return render(request, 'user/register.html', {'form': form})
 
 
-# def password_reset_view(request):
-#     user = ...
+def login_page(request):
+    if request.user.is_authenticated:
+        return redirect('home')
 
-#     send_password_reset_email(request, user)
-#     return redirect(request)
+    if request.method == 'POST':
+        username = request.POST.get('username')
+        password = request.POST.get('password')
+        user = authenticate(request, username=username, password=password)
+
+        if user is not None:
+            login(request, user)
+            messages.success(
+                request, f'Login successful!')
+            return redirect('index')
+        else:
+            messages.error(
+                request, f'Login failed. Check your username or password')
+            return render(request, 'user/login.html')
+
+    return render(request, 'user/login.html')
+
+
+@login_required(login_url='login')
+def logout_page(request):
+    logout(request)
+    return redirect('home')
+
+
+@login_required(login_url='login')
+def profile_page(request):
+    user = request.user
+    
+    return render(request, 'user/profile.html')

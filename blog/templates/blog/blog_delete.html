@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+
+<style>
+    .container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+    }
+</style>
+
+{% block content %}
+<h2>Delete Blog</h2>
+<p>Are you sure you want to delete the blog "{{ blog.title }}"?</p>
+<form method="POST" class="container">
+    {% csrf_token %}
+    <input type="submit" value="Delete" class="btn btn-danger" />
+    <a href="{% url 'blog-detail' blog.id %}" class="btn btn-secondary"
+        >Cancel</a
+    >
+</form>
+{% endblock %}

@@ -2,15 +2,29 @@
 {% load static %}
 <html>
     <head>
-        <title>{{blog.title}}</title>
+        <title>{{blog.title}} blog</title>
         <link
             rel="stylesheet"
             type="text/css"
             href="{% static 'blog/css/style.css' %}"
         />
+        <style>
+            p{
+                margin: 4px;
+            }
+            .messages{
+                margin-bottom: 5px;
+                font-size: 1.4vw;
+            }
+            .messages span{
+                font-style: italic;
+                font-size: smaller;
+            }
+        </style>
     </head>
     <body>
         <div class="container">
+            <a href="{{ request.META.HTTP_REFERER }}">Back to Blog List</a>
             <h2 style="text-align: center">
                 {{ blog.title }}
                 <span
@@ -32,7 +46,37 @@
                 By {{ blog.author }} | Published on {{ blog.pub_date.date }}
             </p>
             <div class="content">{{ blog.content|safe }}</div>
-            <a href="{{ request.META.HTTP_REFERER }}">Back to Blog List</a>
+
+            <div class="messages">
+                <h3>Comment section</h3>
+                {% for message in messages %}
+                  <p style="display: inline-flex; margin-right: 2vw;">{{message.message}}</p> <span>@{{message.user}} on {{message.created_at}}</span>
+                  <br>
+                {% endfor %}
+            </div>
+
+            {% if request.user == blog.author %}
+            <div>
+                <button>
+                    <a href="{% url 'blog-detail' blog.id %}">Delete</a>
+                </button>
+                <button><a href="">Update</a></button>
+            </div>
+
+            {% else %}
+            <div>
+                <form action="" method="post">
+                    {% csrf_token %}
+                    <input
+                        type="text"
+                        name="comment"
+                        id=""
+                        placeholder="Write your comment here..."
+                    />
+                    <button type="submit">COMMENT</button>
+                </form>
+            </div>
+            {% endif %}
         </div>
     </body>
 </html>

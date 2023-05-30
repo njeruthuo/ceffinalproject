@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Blog, Gallery, Event
+from .models import Blog, Gallery, Event, Message
 
 # TODO: REMOVE GROUP FROM ADMIN PANEL
 
@@ -19,3 +19,8 @@ class GalleryAdmin(admin.ModelAdmin):
 @admin.register(Event)
 class EventAdmin(admin.ModelAdmin):
     list_display = ('title', 'description')
+
+
+@admin.register(Message)
+class Message(admin.ModelAdmin):
+    pass

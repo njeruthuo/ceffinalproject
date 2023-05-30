@@ -1,36 +1,59 @@
-<!DOCTYPE html>
+{% extends "base.html" %} 
 {% load static %}
-<html lang="en">
-    <head>
-        <link rel="stylesheet" href=" {% static 'user/css/style.css' %}">
-        <meta charset="UTF-8" />
-        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <title>Document</title>
-    </head>
-    <body>
-        <div class="container">
-            <form method="POST" novalidate>
-                {% csrf_token %}
-                <h2>Login</h2>
+<style>
+    .fields {
+        margin: 1rem;
+    }
+</style>
+<link rel="stylesheet" href=" {% static 'user/css/style.css' %}" />
 
-                {% for field in form %}
-                <div>
-                    {% if field.errors %}
-                    <ul class="errorlist">
-                        {% for error in field.errors %}
-                        <li>{{ error }}</li>
-                        {% endfor %}
-                    </ul>
-                    {% endif %} {{ field.label_tag }} {{ field }}
-                </div>
-                {% endfor %}
-                <input type="submit" value="Login" />
-                <p>
-                    I don't have an account.
-                    <a href="{% url 'register' %}">Sign up</a>
-                </p>
-            </form>
+{% block title %}
+  LOGIN | CEF
+{% endblock title %}
+
+{% block content %}
+  
+
+<div class="container">
+    <form method="POST" novalidate>
+        <div>
+            {% for message in messages %}
+            <p>{{message}}</p>
+            {% endfor %}
         </div>
-    </body>
-</html>
+        {% csrf_token %}
+        <h2>Login</h2>
+        <div class="fields">
+            <label for="Username">Username</label>
+            <br />
+            <input
+                required
+                type="text"
+                name="username"
+                id=""
+                placeholder="Your name..."
+            />
+
+            <label for="password">Password</label>
+            <br />
+            <input
+                required
+                type="password"
+                name="password"
+                id=""
+                placeholder="Password..."
+            />
+        </div>
+
+        <input type="submit" value="Login" />
+        <p>
+            Forgot password
+            <a href="{% url 'password_reset' %}">Reset</a>.
+        </p>
+        <p>
+            I don't have an account.
+            <a href="{% url 'register' %}">Sign up</a>
+        </p>
+    </form>
+</div>
+{% endblock content %}

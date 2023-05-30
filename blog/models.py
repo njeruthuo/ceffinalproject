@@ -23,9 +23,10 @@ class Blog(models.Model):
     pub_date = models.DateTimeField(auto_now_add=True)
     update_date = models.DateTimeField(auto_now=True)
     image = models.ImageField(upload_to='images', blank=True, null=True)
+    video = models.ImageField(upload_to='videos', blank=True, null=True)
     status = models.CharField(
         max_length=10, choices=STATUS_CHOICES, default='draft')
-    views = models.IntegerField(default=0) 
+    # views = models.IntegerField(default=0)
 
 
 class Event(models.Model):
@@ -69,3 +70,10 @@ class Gallery(models.Model):
 
     class Meta:
         verbose_name_plural = 'Galleries'
+
+
+class Message(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    blog = models.ForeignKey(Blog, on_delete=models.CASCADE)
+    message = models.TextField()
+    created_at = models.DateTimeField(auto_now_add=True)

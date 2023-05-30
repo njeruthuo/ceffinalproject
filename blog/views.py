@@ -3,7 +3,7 @@ from django.contrib import messages
 
 from django.contrib.auth.decorators import login_required
 
-from .models import Blog, Gallery, Event
+from .models import Blog, Gallery, Event, Message
 from .forms import BlogForm
 
 
@@ -11,7 +11,7 @@ def index(request):
     return render(request, 'blog/index.html')
 
 
-@login_required
+@login_required(login_url='login')
 def gallery_view(request):
     photos = Gallery.objects.all()
     return render(request, 'blog/gallery.html', {
@@ -19,7 +19,7 @@ def gallery_view(request):
     })
 
 
-@login_required
+@login_required(login_url='login')
 def photo_view(request, pk):
     photo = get_object_or_404(Gallery, pk=pk)
     return render(request, 'photo.html', {
@@ -27,7 +27,7 @@ def photo_view(request, pk):
     })
 
 
-@login_required
+@login_required(login_url='login')
 def events(request):
     events = Event.objects.all()
     return render(request, 'blog/event.html', {
@@ -35,7 +35,7 @@ def events(request):
     })
 
 
-@login_required
+@login_required(login_url='login')
 def event_view(request, pk):
     event = get_object_or_404(Event, pk=pk)
     return render(request, 'event.html', {
@@ -43,20 +43,20 @@ def event_view(request, pk):
     })
 
 
-@login_required
+@login_required(login_url='login')
 def blog_list(request):
     blogs = Blog.objects.all()
-    popular_blogs = Blog.objects.order_by(
-        '-views')[:5]  # Fetch top 10 popular blogs
+    # popular_blogs = Blog.objects.order_by(
+    #     '-views')[:5]
 
     context = {
         'blogs': blogs,
-        'popular_blogs': popular_blogs,
+        # 'popular_blogs': popular_blogs,
     }
     return render(request, 'blog/blog-list.html', context)
 
 
-@login_required
+@login_required(login_url='login')
 def my_blogs(request):
     # blogs written by self himself will be displayed here
     user = request.user
@@ -66,21 +66,29 @@ def my_blogs(request):
     })
 
 
-@login_required
+@login_required(login_url='login')
 def blog_detail(request, pk):
     blog = get_object_or_404(Blog, pk=pk)
-    blog = get_object_or_404(Blog, id=pk)
+    messages = blog.message_set.all().order_by('-created_at')
 
-    blog.views += 1
-    blog.save()
+    if request.method == 'POST':
+
+        content = Message.objects.create(
+            user=request.user,
+            blog=blog,
+            message=request.POST.get('comment')
+        )
+        content.save()
+        return redirect('blog-detail', pk=pk)
 
     context = {
         'blog': blog,
+        'messages': messages,
     }
     return render(request, 'blog/blog-detail.html', context)
 
 
-@login_required
+@login_required(login_url='login')
 def create_blog(request):
     form = BlogForm()
     if request.method == 'POST':
@@ -93,10 +101,10 @@ def create_blog(request):
             return redirect('blog')
         else:
             messages.error(request, 'Error creating the blog post.')
-    return render(request, 'blog/blog_create.html', {'form': form})
+    return render(request, 'blog/blog-create.html', {'form': form})
 
 
-@login_required
+@login_required(login_url='login')
 def update_blog(request, pk):
     blog = get_object_or_404(Blog, pk=pk)
     form = BlogForm(instance=blog)
@@ -111,7 +119,7 @@ def update_blog(request, pk):
     return render(request, 'blog/blog_update.html', {'form': form})
 
 
-@login_required
+@login_required(login_url='login')
 def delete_blog(request, pk):
     blog = get_object_or_404(Blog, pk=pk)
     if request.method == 'POST':
